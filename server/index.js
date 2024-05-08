@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import mongoDBConnection from './config/ConnectDB.js';
 dotenv.config()
 
 
@@ -21,10 +22,13 @@ const corsOptions = function (req, callback) {
 
 app.use(cors(corsOptions));
 
-app.get('/products/:id', function (req, res, next) {
-  res.json({msg: 'This is CORS-enabled for an allowed domain.'})
+app.get('/', function (req, res, next) {
+  res.json({msg: 'Hello from server'})
 })
 
-app.listen(PORT, function () {
-  console.log('CORS-enabled web server listening on port 80')
+
+mongoDBConnection().then(() => {
+  app.listen(PORT, function () {
+    console.log(`CORS-enabled web server listening on port ${PORT}`)
+  })
 })
